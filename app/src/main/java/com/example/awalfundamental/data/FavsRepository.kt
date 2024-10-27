@@ -86,6 +86,7 @@ class FavsRepository private constructor(
         }
     }
 
+
     fun getFinishedEvents(): LiveData<List<Favorite>> {
         return favsDao.getEventsByStatus(false)
     }
@@ -98,6 +99,21 @@ class FavsRepository private constructor(
         CoroutineScope(Dispatchers.IO).launch {
             favsDao.updateBookmarkStatus(eventId, isBookmarked)
         }
+    }
+    fun getFavorites(): LiveData<List<Favorite>> {
+        return favsDao.getAllFavorites()
+    }
+
+    suspend fun addFavorite (event:Favorite){
+        favsDao.addFavorite(event)
+    }
+
+    suspend fun removeFavorite (event:Favorite){
+        favsDao.removeFavorite(event)
+    }
+
+    fun getDetailFavorite (id: Int) : LiveData<Favorite?>{
+        return favsDao.getFavoriteEventById(id)
     }
 
     fun getEvents(): LiveData<Result<List<Favorite>>> {
