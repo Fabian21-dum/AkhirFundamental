@@ -27,8 +27,14 @@ class EventAdapter (private val onBookmarkClick: (ListEventsItem) -> Unit
             Glide.with(binding.root.context)
                 .load(event.imageLogo)
                 .into(binding.imgItemPhoto)
+            binding.cardView.setOnClickListener {
+                val context = binding.root.context
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra("EVENT_ID", event.id)
+                context.startActivity(intent)
+            }
 
-            val ivBookmark = binding.favFab
+            val ivBookmark = binding.ivBookmark
             if (event.isBookmarked) {
                 ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.baseline_favorite_24))
             } else {
@@ -39,12 +45,7 @@ class EventAdapter (private val onBookmarkClick: (ListEventsItem) -> Unit
                 onBookmarkClick(event)
             }
 
-            binding.root.setOnClickListener {
-                val context = binding.root.context
-                val intent = Intent(context, DetailActivity::class.java)
-                intent.putExtra("EVENT_ID", event.id)
-                context.startActivity(intent)
-            }
+
         }
     }
 

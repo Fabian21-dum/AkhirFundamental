@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.awalfundamental.R
@@ -24,7 +25,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        detailViewModel = ViewModelProvider(this).get(DetailViewModel::class.java)
+        detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
 
         val eventId = intent.getIntExtra("EVENT_ID", 0)
         if (eventId != 0){
@@ -84,37 +85,35 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun observeEventDetail() {
-        detailViewModel.isLoading.observe(this) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-
-        detailViewModel.eventDetail.observe(this) { detailResponse ->
-            detailResponse?.let {
+        detailViewModel.eventDetail.observe(this, Observer { detailResponse ->
+            detailResponse?.let{
                 val event = it.event
 
                 binding.tvTitle.text = event.name
-
+                binding.tvSummary.text = event.summary
                 binding.tvDescription.text = HtmlCompat.fromHtml(event.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-
                 Glide.with(this)
                     .load(event.imageLogo)
                     .into(binding.ivPicture)
 
-                binding.tvOwner.text = event.ownerName
                 binding.tvCity.text = event.cityName
-                binding.tvQuota.text = getString(event.quota)
-                binding.tvRegistrans.text = getString(event.registrants)
+                binding.tvOwner.text = event.ownerName
+                binding.tvCat.text = event.category
+                binding.tvQuota.text = "Quota: ${event.quota}"
+                binding.tvRegistrans.text = "Registrans: ${event.registrants}"
+                binding.tvRemain.text = "Sisa Quota: ${event.quota - event.registrants}"
+                binding.tvTime.text =  "${event.beginTime} - ${event.endTime}"
 
-                val remainingQuota = event.quota - event.registrants
-                binding.tvRemain.text = getString(remainingQuota)
-
-                binding.tvTime.text = getString(R.string.event_time, event.beginTime, event.endTime)
-            } ?: run {
+            }?:run{
                 Log.e("DetailActivity", "Event detail is null")
                 Toast.makeText(this, "Failed to load event details", Toast.LENGTH_SHORT).show()
             }
+        })
+        detailViewModel.isLoading.observe(this){ isLoading->
+            binding?.progressBar?.visibility = if(isLoading) View.VISIBLE else View.GONE
         }
-    }
+        }
+
 
     private fun updateFavoriteIcon(isFavorite: Boolean) {
         if (isFavorite) {

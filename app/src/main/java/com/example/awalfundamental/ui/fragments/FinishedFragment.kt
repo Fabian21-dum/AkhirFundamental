@@ -18,21 +18,23 @@ import com.example.awalfundamental.ui.viewmodels.ViewModelFactory
 class FinishedFragment : Fragment() {
 
     private var _binding: FragmentFinishedBinding? = null
-
     private val binding get() = _binding!!
+
     private lateinit var eventAdapter: EventAdapter
-    private lateinit var finishedViewModel: FinishedViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFinishedBinding.inflate(inflater, container, false)
-
         return binding.root
-
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,13 +50,13 @@ class FinishedFragment : Fragment() {
 
     private fun setupRecyclerView(finishedViewModel: FinishedViewModel) {
 
-//        eventAdapter = EventAdapter { event ->
-//            if (event.isBookmarked) {
-//                finishedViewModel.deleteEvent(event)
-//            } else {
-//                finishedViewModel.saveEvent(event)
-//            }
-//        }
+        eventAdapter = EventAdapter { event ->
+            if (event.isBookmarked) {
+                finishedViewModel.deleteEvent(event)
+            } else {
+                finishedViewModel.saveEvent(event)
+            }
+        }
         binding.rvFinished.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFinished.adapter = eventAdapter
     }
@@ -67,14 +69,10 @@ class FinishedFragment : Fragment() {
 
         finishedViewModel.finishedEvents.observe(viewLifecycleOwner) { events ->
             if (events.isNotEmpty()) {
-//                eventAdapter.submitList(events)
+                eventAdapter.submitList(events)
             } else {
                 Toast.makeText(requireContext(), "No finished events available", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

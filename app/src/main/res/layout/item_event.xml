@@ -61,15 +61,16 @@
             card_view:layout_constraintVertical_bias="0.0"
             tools:text="@string/description" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fav_fab"
+        <ImageView
+            android:id="@+id/iv_bookmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginStart="270dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:tag="Not Saved"
+            android:contentDescription="Save Bookmark"
             android:src="@drawable/baseline_favorite_border_24"
-            card_view:backgroundTint="@color/blue_200"
-            card_view:fabSize="normal"
-            tools:ignore="MissingConstraints" />
+            card_view:layout_constraintStart_toStartOf="@id/img_item_photo"
+            card_view:layout_constraintTop_toTopOf="@id/img_item_photo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
