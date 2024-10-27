@@ -15,6 +15,7 @@ import com.example.awalfundamental.R
 import com.example.awalfundamental.data.favs.Favorite
 import com.example.awalfundamental.databinding.ActivityDetailBinding
 import com.example.awalfundamental.ui.viewmodels.DetailViewModel
+import com.example.awalfundamental.ui.viewmodels.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -25,7 +26,9 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        detailViewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+        val sharedPref = SettingPreferences.getInstance(this.dataStore)
+        val factory = ViewModelFactory.getInstance(this, sharedPref)
+        detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
         val eventId = intent.getIntExtra("EVENT_ID", 0)
         if (eventId != 0){
