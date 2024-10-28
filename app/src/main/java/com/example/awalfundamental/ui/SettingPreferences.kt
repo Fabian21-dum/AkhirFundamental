@@ -15,41 +15,29 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "se
 class SettingPreferences private constructor(
     private val dataStore: DataStore<Preferences>
 ) {
-
     private val THEME_KEY = booleanPreferencesKey("theme_setting")
-    private val REMINDER_KEY = booleanPreferencesKey("daily_reminder")
 
+    // Theme setting flow
     fun getThemeSetting(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[THEME_KEY] ?: false
         }
     }
 
+    // Save theme setting
     suspend fun saveThemeSetting(isDarkModeActive: Boolean) {
         dataStore.edit { preferences ->
             preferences[THEME_KEY] = isDarkModeActive
         }
     }
-
-    suspend fun setReminderEnabled(enabled: Boolean) {
-        dataStore.edit { preferences ->
-            preferences[REMINDER_KEY] = enabled
-        }
-    }
-
-    fun isReminderEnabled(): Flow<Boolean> {
-        return dataStore.data.map { preferences ->
-            preferences[REMINDER_KEY] ?: false
-        }
-    }
-
     companion object {
         @Volatile
         private var INSTANCE: SettingPreferences? = null
 
-        fun getInstance(dataStore: DataStore<Preferences>): SettingPreferences {
+        // Singleton instance creation
+        fun getInstance(context: Context): SettingPreferences {
             return INSTANCE ?: synchronized(this) {
-                val instance = SettingPreferences(dataStore)
+                val instance = SettingPreferences(context.dataStore)
                 INSTANCE = instance
                 instance
             }

@@ -27,4 +27,9 @@
         android:name="com.example.awalfundamental.ui.fragments.FavoriteFragment"
         android:label="Favorite"
         tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.awalfundamental.ui.fragments.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

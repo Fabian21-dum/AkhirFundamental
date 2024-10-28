@@ -29,6 +29,12 @@ class ViewModelFactory private constructor(
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 DetailViewModel(eventDao) as T
             }
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(SettingsViewModel::class.java) -> {
+                return SettingsViewModel(pref) as T
+            }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

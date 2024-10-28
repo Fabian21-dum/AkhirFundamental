@@ -38,6 +38,15 @@ class FavoriteFragment : Fragment() {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
+    override fun onResume() {
+        super.onResume()
+        // Call your fragment reloading code here
+        reloadFragmentContent()
+    }
+    private fun reloadFragmentContent() {
+        // Assuming you have a ViewModel with a function to refresh data
+        viewModel.fetchFavoriteEvents()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -47,7 +56,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = SettingPreferences.getInstance(requireContext().dataStore)
+        val sharedPref = SettingPreferences.getInstance(requireContext())
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireContext(), sharedPref)
         val viewModel: FavoriteViewModel by viewModels { factory }
 

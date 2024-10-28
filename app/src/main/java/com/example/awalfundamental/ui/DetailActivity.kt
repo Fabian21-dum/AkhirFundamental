@@ -26,7 +26,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPref = SettingPreferences.getInstance(this.dataStore)
+        val sharedPref = SettingPreferences.getInstance(this)
         val factory = ViewModelFactory.getInstance(this, sharedPref)
         detailViewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 

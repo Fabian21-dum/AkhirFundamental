@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPref = SettingPreferences.getInstance(requireContext().dataStore)
+        val sharedPref = SettingPreferences.getInstance(requireContext())
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireContext(), sharedPref)
         val upcomingViewModel: HomeViewModel by viewModels { factory }
 

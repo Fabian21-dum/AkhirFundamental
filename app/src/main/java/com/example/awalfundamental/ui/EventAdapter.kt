@@ -22,7 +22,7 @@ class EventAdapter (private val onBookmarkClick: (ListEventsItem) -> Unit
     inner class EventViewHolder(private val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(event: ListEventsItem) {
             binding.tvItemName.text = event.name
-            binding.tvItemDescription.text = Html.fromHtml(event.description, Html.FROM_HTML_MODE_COMPACT)
+            binding.tvItemDescription.text = Html.fromHtml(event.summary, Html.FROM_HTML_MODE_COMPACT)
 
             Glide.with(binding.root.context)
                 .load(event.imageLogo)
@@ -34,16 +34,6 @@ class EventAdapter (private val onBookmarkClick: (ListEventsItem) -> Unit
                 context.startActivity(intent)
             }
 
-            val ivBookmark = binding.ivBookmark
-            if (event.isBookmarked) {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.baseline_favorite_24))
-            } else {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.baseline_favorite_border_24))
-            }
-
-            ivBookmark.setOnClickListener {
-                onBookmarkClick(event)
-            }
 
 
         }
