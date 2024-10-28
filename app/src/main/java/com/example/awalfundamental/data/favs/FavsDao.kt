@@ -10,14 +10,14 @@ import androidx.room.Update
 
 @Dao
 interface FavsDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addFavorite(event: Favorite)
+    @Query("UPDATE events SET isFavorite = 1 WHERE id = :eventId")
+    suspend fun addToFavorites(eventId: Int)
+
+    @Query("UPDATE events SET isFavorite = 0 WHERE id = :eventId")
+    suspend fun removeFromFavorites(eventId: Int)
 
     @Update
     fun update(event: Favorite)
-
-    @Delete
-    suspend fun removeFavorite(event: Favorite)
 
     @Query("SELECT * FROM events WHERE id = :id")
     fun getFavoriteEventById(id: Int): LiveData<Favorite?>
@@ -49,13 +49,13 @@ interface FavsDao {
 //    @Query("SELECT * FROM events WHERE id = :id")
 //    fun getFavoriteEventById(id: Int): LiveData<Favorite?>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insert(fav: Favorite)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(event: Favorite)
 
     @Query("DELETE FROM events WHERE id = :eventId")
     suspend fun deleteById(eventId: Int)
 
-    @Query("SELECT * FROM events WHERE isBookmarked = 1")
+    @Query("SELECT * FROM events WHERE isFavorite = 1")
     fun getFavoriteEvents(): LiveData<List<Favorite>>
 
     @Query("UPDATE events SET isBookmarked = :bookmarked WHERE id = :eventId")

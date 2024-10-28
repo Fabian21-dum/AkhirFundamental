@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ import com.example.awalfundamental.ui.viewmodels.FavoriteViewModel
 import com.example.awalfundamental.ui.viewmodels.ViewModelFactory
 
 
-class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
+class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
@@ -48,8 +49,9 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite) {
 
         val sharedPref = SettingPreferences.getInstance(requireContext().dataStore)
         val factory: ViewModelFactory = ViewModelFactory.getInstance(requireContext(), sharedPref)
-        viewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
+        val viewModel: FavoriteViewModel by viewModels { factory }
 
+        this.viewModel = viewModel
         setupRecyclerView()
         observeViewModel()
 

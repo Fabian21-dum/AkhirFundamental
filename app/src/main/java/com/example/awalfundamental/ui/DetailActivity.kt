@@ -75,7 +75,8 @@ class DetailActivity : AppCompatActivity() {
                             summary = event.summary,
                             category = event.category,
                             active = event.active,
-                            isBookmarked = true
+                            isBookmarked = true,
+                            isFavorite = true
                         )
                         detailViewModel.addEventToFavorite(favoriteEntity)
                     }

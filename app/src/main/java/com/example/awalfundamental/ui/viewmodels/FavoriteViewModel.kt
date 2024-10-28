@@ -23,8 +23,9 @@ class FavoriteViewModel(private val repository: FavsRepository) : ViewModel() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                val events = repository.getFavoriteEvents().value ?: emptyList()
-                _favoriteEvents.value = events
+                repository.getFavoriteEvents().observeForever { events ->
+                    _favoriteEvents.value = events
+                }
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load favorite events: ${e.message}"
             } finally {
@@ -36,7 +37,7 @@ class FavoriteViewModel(private val repository: FavsRepository) : ViewModel() {
     fun addFavoriteEvent(eventItem: ListEventsItem) {
         viewModelScope.launch {
             try {
-                repository.updateBookmarkStatus(eventItem.id, true)
+                repository.addEventToFavorites(eventItem.id)
                 fetchFavoriteEvents()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to add favorite event: ${e.message}"
@@ -47,7 +48,7 @@ class FavoriteViewModel(private val repository: FavsRepository) : ViewModel() {
     fun deleteFavoriteEvent(eventItem: ListEventsItem) {
         viewModelScope.launch {
             try {
-                repository.updateBookmarkStatus(eventItem.id, false)
+                repository.removeEventFromFavorites(eventItem.id)
                 fetchFavoriteEvents()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to remove favorite event: ${e.message}"
