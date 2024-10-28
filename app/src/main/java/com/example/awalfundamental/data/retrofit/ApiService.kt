@@ -27,7 +27,7 @@ import retrofit2.http.Query
         ): Response<EventResponse>
 
         companion object {
-            private const val BASE_URL = "https://your-api-base-url.com/"
+            private const val BASE_URL = "https://event-api.dicoding.dev/"
 
             fun create(): ApiService {
                 val retrofit = Retrofit.Builder()
