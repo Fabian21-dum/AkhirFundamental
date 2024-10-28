@@ -155,18 +155,9 @@ class FavsRepository private constructor(
         return result
     }
 
-    suspend fun getUpcomingEvent(limit: Int = 1): EventResponse? {
-        return try {
-            val response = apiService.getEvents(active = -1, limit = limit)
-            if (response.isSuccessful) {
-                response.body()
-            } else {
-                null
-            }
-        } catch (e: Exception) {
-            null
-        }
-    }
+
+
+
 
     companion object {
         @Volatile

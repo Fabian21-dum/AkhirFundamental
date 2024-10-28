@@ -61,8 +61,6 @@ interface FavsDao {
     @Query("UPDATE events SET isBookmarked = :bookmarked WHERE id = :eventId")
     suspend fun updateBookmarkStatus(eventId: Int, bookmarked: Boolean)
 
-    @Query("SELECT * FROM events WHERE name LIKE '%' || :query || '%'")
-    fun searchEvents(query: String): List<Favorite>
 
     companion object {
         fun getInstance(): FavsDao {
